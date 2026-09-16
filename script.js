@@ -40,11 +40,11 @@ const characterData = {
     { name: '정원사', weight: 18, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s4.jpg" },
     { name: '모험가', weight: 0, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s6.jpg" }],
 
-    d: [{ name: '주술사', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s19.jpg" },
-    { name: '궁수', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s47.jpg" },
-    { name: '골동품상인', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s37.jpg" },
-    { name: '탐사원', weight: 10, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s18.jpg" },
-    { name: '타자', weight: 2, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s29.jpg" }],
+    d: [{ name: '궁수', weight: 70, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s47.jpg" },
+        { name: '주술사', weight: 62, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s19.jpg" },
+        { name: '골동품상인', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s37.jpg" },
+        { name: '탐사원', weight: 10, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s18.jpg" },
+        { name: '타자', weight: 2, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s29.jpg" }],
 
     e: [{ name: '환등사', weight: 60, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s49.jpg" },
     { name: '행운아', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s52.jpg" },
@@ -279,6 +279,9 @@ function generateCombination() {
     if (pickedCharA.name === '항해사') {
         adjustWeight('마술사', -10);
         adjustWeight('파로부인', -10);
+        adjustWeight('골동품상인', -40);
+        adjustWeight('교수', -12);
+        adjustWeight('주술사', -25);
     }
     if (pickedCharA.name === '묘지기') {
         adjustWeight('기계공', -18);
