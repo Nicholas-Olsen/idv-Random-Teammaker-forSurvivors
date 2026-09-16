@@ -1,7 +1,7 @@
 body {
     font-family: 'Malgun Gothic', sans-serif;
     text-align: center;
-    padding: 30px;
+    padding: 18px;
     background-color: #f4f4f9;
     margin: 0;
 }
@@ -64,7 +64,7 @@ button {
 }
 
 .btn-warning {
-    background-color: #ffe032;
+    background-color: #fde246;
     color: black;
 }
 
@@ -398,7 +398,7 @@ button {
 
     /* 2. 제목 및 텍스트 크기 축소 (두 줄 겹침 방지) */
     h1 {
-        font-size: 1.5em;
+        font-size: 1.3em;
         margin-top: 0;
     }
 
@@ -434,14 +434,20 @@ button {
 
     /* 5. 뽑기 결과 카드 크기 축소 */
     .result-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 5px;
-        margin-top: 15px;
-        margin-bottom: 20px;
+        margin: 15px auto 20px auto;
+        max-width: 250px;
+        justify-items: center;
     }
 
     .result-card {
-        width: 90px;
-        padding: 4px;
+        width: 100%;
+        max-width: 130px;
+        max-height:170px;
+        padding: 15px;
+        box-sizing: border-box;
     }
 
     .result-char-img {
@@ -450,8 +456,8 @@ button {
     }
 
     .result-card .weight-info {
-    font-size: 0.7em;
-}
+        font-size: 0.7em;
+    }
 
     .result-card .char-name {
         font-size: 1.0em;
@@ -472,6 +478,7 @@ button {
 
     .result-card {
         width: 90px;
+        .result-card { max-width: 120px; } 
     }
 
     .result-char-img {
