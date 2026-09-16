@@ -44,12 +44,12 @@ button {
 }
 
 .btn-success {
-    background-color: #41b838;
+    background-color: #1aaa47;
     color: white;
 }
 
 .btn-success:hover {
-    background-color: #0d863a;
+    background-color: #097548;
     transform: scale(1.1);
 }
 
@@ -151,10 +151,10 @@ button {
 
 /* 뽑기 결과 카드에 들어갈 이미지 */
 .result-char-img {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
 }
@@ -164,12 +164,16 @@ button {
     border: 4px solid #ff4e4b;
     transform: scale(0.99);
 }
+
 .roster-card.staged-ban::after {
     content: "";
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(255, 70, 88, 0.2); 
-    pointer-events: none; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 70, 88, 0.2);
+    pointer-events: none;
 }
 
 /* 밴 '완료' 되었을 때 (검은색 반투명 오버레이) */
@@ -215,7 +219,7 @@ button {
 }
 
 .result-card .list-name {
-    font-size: 0.9em;
+    font-size: 0.8em;
     color: #2e88d2;
     margin-bottom: 5px;
     font-weight: bold;
@@ -227,6 +231,22 @@ button {
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
+}
+
+.result-card .char-name.long-name {
+    font-size: 1.2em !important;
+    line-height: 1.2;
+    min-height: 2.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: keep-all;
+    margin-bottom: 10px;
+}
+
+.result-char-img {
+    width: 60px;
+    height: 60px;
 }
 
 .result-card .weight-info {
@@ -259,12 +279,15 @@ button {
     display: flex;
     flex-direction: column;
     /* 기존 재생바 폭(보통 300px)에 맞춤 */
-    width: 300px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    width: 300px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     background: #fff;
 }
-#bgm-container:hover { opacity: 1; }
+
+#bgm-container:hover {
+    opacity: 1;
+}
 
 /* BGM 상단바 (음표와 목록 버튼) */
 .bgm-header {
@@ -276,33 +299,59 @@ button {
     border-radius: 10px 10px 0 0;
     border-bottom: 1px solid #ddd;
 }
-.bgm-title { font-size: 0.9em; font-weight: bold; color: #333; }
-.bgm-title .icon { margin-right: 5px; color: #649fe3e7; }
+
+.bgm-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #333;
+}
+
+.bgm-title .icon {
+    margin-right: 5px;
+    color: #649fe3e7;
+}
 
 /* ☰ 목록 버튼 */
 #playlist-btn {
-    background: none; border: none; color: #555;
-    font-size: 1.2em; padding: 0 5px; margin: 0;
-    cursor: pointer; transition: 0.2s;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 1.2em;
+    padding: 0 5px;
+    margin: 0;
+    cursor: pointer;
+    transition: 0.2s;
 }
-#playlist-btn:hover { color: #007bff; transform: scale(1.1); }
+
+#playlist-btn:hover {
+    color: #007bff;
+    transform: scale(1.1);
+}
 
 /* 플레이리스트 메뉴 (위로 열리는 드롭업) */
 #playlist-menu {
     position: absolute;
-    bottom: 100%; /* 플레이어 바로 위로 띄움 */
+    bottom: 100%;
     right: 0;
     width: 100%;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 5px;
     max-height: 200px;
-    overflow-y: auto; /* 리스트가 길어지면 스크롤 생성 */
+    overflow-y: auto;
 }
-#playlist-menu.hidden { display: none; }
 
-#playlist-ul { list-style: none; padding: 0; margin: 0; }
+#playlist-menu.hidden {
+    display: none;
+}
+
+#playlist-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 #playlist-ul li {
     padding: 12px 15px;
     font-size: 0.9em;
@@ -310,8 +359,18 @@ button {
     cursor: pointer;
     transition: background 0.2s;
 }
-#playlist-ul li:hover { background: #f0f8ff; color: #007bff; font-weight: bold; }
-#playlist-ul li.active { background: #007bff; color: #fff; font-weight: bold; }
+
+#playlist-ul li:hover {
+    background: #f0f8ff;
+    color: #007bff;
+    font-weight: bold;
+}
+
+#playlist-ul li.active {
+    background: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
 
 #bgm-audio {
     width: 100%;
@@ -388,11 +447,11 @@ button {
     .result-card .char-name {
         font-size: 1.1em;
     }
-
-    .result-char-img {
-        width: 60px;
-        height: 60px;
+    
+    .result-card .char-name.long-name {
+        font-size: 0.85em !important;
     }
+
 }
 
 /* 📱 아이폰 SE 등 가로폭이 매우 좁은(380px 이하) 초소형 폰을 위한 추가 조치 */
@@ -418,9 +477,18 @@ button {
         transform-origin: bottom right;
     }
 
-    @media screen and (max-width: 768px) {
-    #bgm-container { width: 250px; bottom: 10px; right: 10px; }
-    #playlist-menu { max-height: 150px; }
-}
+    #bgm-container {
+        width: 250px;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    #playlist-menu {
+        max-height: 150px;
+    }
     
+    .result-card .char-name.long-name {
+        font-size: 0.75em !important;
+    }
+
 }
