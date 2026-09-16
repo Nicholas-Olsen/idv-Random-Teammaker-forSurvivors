@@ -67,3 +67,152 @@ const characterData = {
     { name: '변호사', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s2.jpg" },
     { name: '맹인', weight: 1, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s12.jpg" }]
 };
+
+let currentMap = null;
+let isBanMode = false;
+let bannedChars = new Set();
+let tempBannedChars = new Set();
+
+// --- 2. 공통 유틸 함수 --- //
+
+function getWeightedRandomItem(itemsArray) {
+    // 점수가 1 이상인 캐릭터들로만 추첨 풀 구성 (마이너스 무시)
+    const validItems = itemsArray.filter(item => item.weight > 0);
+
+    if (validItems.length === 0) {
+        return { ...itemsArray[0], chance: "0.0" };
+    }
+
+    const totalWeight = validItems.reduce((sum, item) => sum + item.weight, 0);
+    const randomNum = Math.random() * totalWeight;
+
+    let weightSum = 0;
+    for (let i = 0; i < validItems.length; i++) {
+        weightSum += validItems[i].weight;
+        if (randomNum <= weightSum) {
+            const chancePercent = ((validItems[i].weight / totalWeight) * 100).toFixed(1);
+            return { ...validItems[i], chance: chancePercent };
+        }
+    }
+}
+
+// --- 3. 초기 로스터 UI 생성 --- //
+function initRoster() {
+    const rosterArea = document.getElementById('rosterArea');
+    rosterArea.innerHTML = '';
+
+    for (const [listKey, chars] of Object.entries(characterData)) {
+        chars.forEach(char => {
+            const card = document.createElement('div');
+            card.className = 'roster-card';
+            card.id = `roster-${char.name}`;
+
+            // 카드에 마우스를 올리면 이름이 말풍선처럼 뜨게 
+            card.title = `[그룹 ${listKey.toUpperCase()}] ${char.name}`;
+            card.onclick = () => handleRosterClick(char.name);
+
+            card.innerHTML = `
+                <img src="${char.img}" alt="${char.name}" class="char-img">
+                <div class="ban-overlay">BANNED</div>
+            `;
+            rosterArea.appendChild(card);
+        });
+    }
+}
+
+// --- 4. 맵 선택 --- //
+function selectMap() {
+    currentMap = getWeightedRandomItem(mapData);
+    document.getElementById('mapScreen').classList.add('hidden');
+    document.getElementById('comboScreen').classList.remove('hidden');
+    document.getElementById('currentMapDisplay').innerHTML =
+        `선택된 맵: [ ${currentMap.name} ] <span style="font-size: 0.6em; color:#888;">(맵 확률: ${currentMap.chance}%)</span>`;
+
+    initRoster();
+}
+
+// --- 5. 밴 시스템 로직 --- //
+function enterBanMode() {
+    isBanMode = true;
+    tempBannedChars = new Set(bannedChars);
+
+    document.getElementById('normalButtons').classList.add('hidden');
+    document.getElementById('banButtons').classList.remove('hidden');
+    document.getElementById('resultArea').innerHTML = '';
+
+    updateRosterVisuals();
+}
+
+function handleRosterClick(charName) {
+    if (!isBanMode) return;
+
+    if (tempBannedChars.has(charName)) {
+        tempBannedChars.delete(charName);
+    } else {
+        if (tempBannedChars.size >= 10) {
+            alert("밴은 최대 10개까지만 지정할 수 있습니다.");
+            return;
+        }
+        tempBannedChars.add(charName);
+    }
+    updateRosterVisuals();
+}
+
+function applyBans() {
+    bannedChars = new Set(tempBannedChars);
+    exitBanMode();
+}
+
+function cancelBanMode() {
+    tempBannedChars = new Set();
+    exitBanMode();
+}
+
+function exitBanMode() {
+    isBanMode = false;
+    document.getElementById('banButtons').classList.add('hidden');
+    document.getElementById('normalButtons').classList.remove('hidden');
+    updateRosterVisuals();
+}
+
+function updateRosterVisuals() {
+    const cards = document.querySelectorAll('.roster-card');
+    cards.forEach(card => {
+        const charName = card.id.replace('roster-', '');
+        card.classList.remove('staged-ban', 'applied-ban');
+
+        if (isBanMode) {
+            if (tempBannedChars.has(charName)) card.classList.add('staged-ban');
+        } else {
+            if (bannedChars.has(charName)) card.classList.add('applied-ban');
+        }
+    });
+}
+
+// --- 6. 조합 뽑기 로직 (고급 규칙) --- //
+function generateCombination() {
+    const availableData = {};
+
+    for (const [listKey, chars] of Object.entries(characterData)) {
+        availableData[listKey] = chars
+            .filter(c => !bannedChars.has(c.name))
+            .map(c => ({ ...c }));
+    }
+
+    // 💡 캐릭터 점수 조절 함수
+    function adjustWeight(targetName, amount) {
+        for (const g of Object.keys(availableData)) {
+            const index = availableData[g].findIndex(c => c.name === targetName);
+            if (index !== -1) {
+                availableData[g][index].weight += amount;
+            }
+        }
+    }
+
+    // 💡 맵 시너지 전용 함수
+    function applyMapSynergy(targetName, mapNames, amount) {
+        // 현재 선택된 맵이 조건 배열에 포함되어 있다면 점수 가감
+        if (mapNames.includes(currentMap.name)) {
+            adjustWeight(targetName, amount);
+        }
+    }
