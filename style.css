@@ -214,7 +214,7 @@ button {
     border-radius: 10px;
     border: 1px solid #007bff;
     width: 130px;
-    max-height: 180px;
+    max-height: 160px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -493,7 +493,7 @@ button {
     }
 
     #playlist-menu {
-        max-height: 150px;
+        max-height: 140px;
     }
 
     .result-card .char-name.long-name {
