@@ -12,58 +12,59 @@ const mapData = [
 ];
 
 const characterData = {
-    a: [{ name: '묘지기', weight: 40 }, 
-    { name: '항해사', weight: 35 }, 
+    a: [{ name: '묘지기', weight: 40 },
+    { name: '항해사', weight: 35 },
     { name: '탈출마스터', weight: 30 },
-    { name: '용병', weight: 25, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s7.jpg" }, 
-    { name: '야만인', weight: 8 }, 
-    {name: '포워드', weight: 8 },
-    { name: '우는광대', weight: 8 }, 
+    { name: '용병', weight: 25, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s7.jpg" },
+    { name: '야만인', weight: 8 },
+    { name: '포워드', weight: 8 },
+    { name: '우는광대', weight: 8 },
     { name: '기사', weight: 6 }],
 
-    b: [{ name: '투우사', weight: 40 }, 
-        { name: '인형사', weight: 35 }, 
-        { name: '기상학자', weight: 40 }, 
-        { name: '항공전문가', weight: 38 }, 
-        { name: '조향사', weight: 20 }, 
-        { name: '기자', weight: 5 }],
+    b: [{ name: '투우사', weight: 40 },
+    { name: '인형사', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s42.jpg" },
+    { name: '기상학자', weight: 40 },
+    { name: '항공전문가', weight: 38 },
+    { name: '조향사', weight: 20 },
+    { name: '무언극 아티스트', weight: 30 },
+    { name: '기자', weight: 5 }],
 
-    c: [{ name: '공군', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s8.jpg"}, 
-    { name: '화재조사관', weight: 30 }, 
+    c: [{ name: '공군', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s8.jpg" },
+    { name: '화재조사관', weight: 30, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s43.jpg" },
     { name: '장난감상인', weight: 15 },
-    { name: '환자', weight: 20 }, 
-    { name: '치어리더', weight: 20 }, 
+    { name: '환자', weight: 20 },
+    { name: '치어리더', weight: 20 },
     { name: '마술사', weight: 25 },
-    { name: '곡예사', weight: 18 }, 
-    { name: '정원사', weight: 18, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s4.jpg"}, 
-    { name: '모험가', weight: 0 , img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s6.jpg"}],
+    { name: '곡예사', weight: 18 },
+    { name: '정원사', weight: 18, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s4.jpg" },
+    { name: '모험가', weight: 0, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s6.jpg" }],
 
-    d: [{ name: '주술사', weight: 40 }, 
-        { name: '궁수', weight: 50 },
-        { name: '골동품상인', weight: 35 }, 
-        { name: '탐사원', weight: 15 }],
+    d: [{ name: '주술사', weight: 40 },
+    { name: '궁수', weight: 50 },
+    { name: '골동품상인', weight: 35 },
+    { name: '탐사원', weight: 15 }],
 
-    e: [{ name: '환등사', weight: 60 }, 
-    { name: '행운아', weight: 50 }, 
-    { name: '의사', weight: 50,  img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s1.jpg"},
-    { name: '심리학자', weight: 40 }, 
-    { name: '곤충학자', weight: 15 }, 
+    e: [{ name: '환등사', weight: 60 },
+    { name: '행운아', weight: 50 },
+    { name: '의사', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s1.jpg" },
+    { name: '심리학자', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s32.jpg" },
+    { name: '곤충학자', weight: 15 },
     { name: '교수', weight: 28 },
     { name: '납관사', weight: 18 },
-    { name: '샤먼', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s9.jpg"}, 
+    { name: '샤먼', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s9.jpg" },
     { name: '바텐더', weight: 24 },
-    { name: '여자아이', weight: 15 }, 
-    { name: '소설가', weight: 18 }, 
+    { name: '여자아이', weight: 15 },
+    { name: '소설가', weight: 18 },
     { name: '화가', weight: 15 }],
 
-    f: [{ name: '파로부인', weight: 45 }, 
-        { name: '작곡가', weight: 20 }, 
-        { name: '기계공', weight: 15 },
-        { name: '죄수', weight: 20 }, 
-        { name: '우배부', weight: 20 }, 
-        { name: '무희', weight: 15 },
-        { name: '변호사', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s2.jpg"}, 
-        { name: '맹인', weight: 1 }]
+    f: [{ name: '파로부인', weight: 45 },
+    { name: '작곡가', weight: 15 },
+    { name: '기계공', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s10.jpg" },
+    { name: '죄수', weight: 20 },
+    { name: '우배부', weight: 20 },
+    { name: '무희', weight: 15 },
+    { name: '변호사', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s2.jpg" },
+    { name: '맹인', weight: 1 }]
 };
 
 let currentMap = null;
@@ -99,18 +100,18 @@ function initRoster() {
     const rosterArea = document.getElementById('rosterArea');
     rosterArea.innerHTML = '';
 
-      for (const [listKey, chars] of Object.entries(characterData)) {
+    for (const [listKey, chars] of Object.entries(characterData)) {
         chars.forEach(char => {
             const card = document.createElement('div');
             card.className = 'roster-card';
             card.id = `roster-${char.name}`;
-            
+
             // 카드에 마우스를 올리면 이름이 말풍선처럼 뜨게 
             card.title = `[그룹 ${listKey.toUpperCase()}] ${char.name}`;
             card.onclick = () => handleRosterClick(char.name);
 
             card.innerHTML = `
-                <img src="./images/${char.name}.png" alt="${char.name}" class="char-img">
+                <img src="${char.img}" alt="${char.name}" class="char-img">
                 <div class="ban-overlay">BANNED</div>
             `;
             rosterArea.appendChild(card);
@@ -261,7 +262,7 @@ function generateCombination() {
 
     // [규칙 1] A그룹에서 무조건 1명 차출
     if (availableData.a.length === 0) {
-        alert("A그룹의 캐릭터가 모두 밴 되었습니다. A그룹은 최소 1명 필수입니다.");
+        alert("구출 그룹의 캐릭터가 모두 밴 되었습니다. 구출은 최소 1명 필수입니다.");
         return;
     }
     const pickedCharA = getWeightedRandomItem(availableData.a);
@@ -285,17 +286,19 @@ function generateCombination() {
 
     // ⭐ [추가 조건] 포워드 선택 시 D그룹 가중치 감소
     if (pickedCharA.name === '포워드') {
-        groupWeights.d = 12; // 
+        groupWeights.d = 12;
+        adjustWeight('기계공', 10);
+        adjustWeight('심리학자', 10);
     }
 
-    const selectedCombo = []; 
+    const selectedCombo = [];
 
     // [규칙 4] 우는광대(A7), 기사(A8) 선택 시 B그룹 무조건 1명 이상 선배정
     if (isA7orA8) {
         if (availableData.b.length >= 1) {
             selectedCombo.push('b');
         } else {
-            alert("우는광대 또는 기사가 뽑혔으나, B그룹 캐릭터가 부족하여 조합을 만들 수 없습니다.");
+            alert("구출이 약한 캐릭터가 뽑혔으나, 서브구출 캐릭터가 부족하여 조합을 만들 수 없습니다.");
             return;
         }
     }
@@ -309,7 +312,7 @@ function generateCombination() {
         // 현재 추첨 가능한 그룹들만 후보에 올리기
         for (const g of ['b', 'c', 'd', 'e', 'f']) {
             const currentCount = selectedCombo.filter(x => x === g).length;
-            const maxCap = (g === 'b' || g === 'c') ? 2 : 1; 
+            const maxCap = (g === 'b' || g === 'c') ? 2 : 1;
 
             // 그룹 제한 수(cap)를 넘지 않았고, 남은 캐릭터 수가 뽑아야 할 수보다 많을 때만 후보 등록
             if (currentCount < maxCap && availableData[g].length > currentCount) {
@@ -341,9 +344,10 @@ function generateCombination() {
             const picked = getWeightedRandomItem(availableData[g]);
             finalTeam.push({ list: g, character: picked });
 
-            // 캐릭터 간 시너지 (B, E그룹 실시간 삭감)
+            // 캐릭터 간 시너지 (실시간 증감)
             if (picked.name === '인형사') adjustWeight('의사', -3);
             if (picked.name === '무희') adjustWeight('모험가', -10);
+            if (picked.name === '곡예사') adjustWeight('골상', -500);
 
             // 중복 픽 방지
             availableData[g] = availableData[g].filter(c => c.name !== picked.name);
@@ -357,17 +361,16 @@ function generateCombination() {
 // 렌더링 함수 //
 function renderResult(team) {
     const resultArea = document.getElementById('resultArea');
-    resultArea.innerHTML = ''; 
+    resultArea.innerHTML = '';
 
     team.forEach(member => {
         const card = document.createElement('div');
         card.className = 'result-card';
         card.innerHTML = `
             <div class="list-name">그룹 ${member.list}</div>
-            <!-- 결과창 캐릭터 이미지 추가 -->
-            <img src="./images/${member.character.name}.png" alt="${member.character.name}" class="result-char-img">
+            <img src="${member.character.img}" alt="${member.character.name}" class="result-char-img">
             <div class="char-name">${member.character.name}</div>
-            <div class="weight-info">적용 점수: ${member.character.weight}점<br>(당첨 확률: ${member.character.chance}%)</div>
+            <div class="weight-info">당첨 확률: ${member.character.chance}%</div>
         `;
         resultArea.appendChild(card);
     });
