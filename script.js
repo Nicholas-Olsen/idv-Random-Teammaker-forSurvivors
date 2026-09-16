@@ -41,10 +41,10 @@ const characterData = {
     { name: '모험가', weight: 0, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s6.jpg" }],
 
     d: [{ name: '궁수', weight: 70, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s47.jpg" },
-        { name: '주술사', weight: 62, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s19.jpg" },
-        { name: '골동품상인', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s37.jpg" },
-        { name: '탐사원', weight: 10, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s18.jpg" },
-        { name: '타자', weight: 2, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s29.jpg" }],
+    { name: '주술사', weight: 62, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s19.jpg" },
+    { name: '골동품상인', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s37.jpg" },
+    { name: '탐사원', weight: 10, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s18.jpg" },
+    { name: '타자', weight: 2, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s29.jpg" }],
 
     e: [{ name: '환등사', weight: 60, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s49.jpg" },
     { name: '행운아', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s52.jpg" },
@@ -122,15 +122,56 @@ function initRoster() {
     }
 }
 
-// --- 4. 맵 선택 --- //
+// --- 4. 맵 선택 시스템 (랜덤 & 수동) --- //
+
+// [수동 선택] 영역 열기/닫기
+function toggleManualMapSelect() {
+    document.getElementById('manualMapSelectArea').classList.toggle('hidden');
+}
+
+// [수동 선택] 드롭다운에서 맵을 골랐을 때
+function onMapDropdownChange() {
+    const dropdown = document.getElementById('mapDropdown');
+    const confirmArea = document.getElementById('manualMapConfirmArea');
+    const display = document.getElementById('manualMapDisplay');
+
+    if (dropdown.value) {
+        dropdown.style.color = "#333"; 
+        display.innerHTML = `현재 맵: [ ${dropdown.value} ]`;
+        confirmArea.classList.remove('hidden');
+    } else {
+        dropdown.style.color = "gray"; 
+        confirmArea.classList.add('hidden');
+    }
+}
+
+// [수동 선택] 맵 결정 버튼 클릭 시
+function confirmManualMap() {
+    const dropdown = document.getElementById('mapDropdown');
+    if (!dropdown.value) return;
+
+    const selectedMapObj = mapData.find(m => m.name === dropdown.value);
+    // 수동 선택은 등장 확률 대신 '수동 지정'이라는 텍스트를 부여합니다
+    currentMap = { ...selectedMapObj, chance: "수동 지정" };
+    goToPhase2();
+}
+
+// [랜덤 선택] 버튼 클릭 시 (기존 로직)
 function selectMap() {
     currentMap = getWeightedRandomItem(mapData);
+    currentMap.chance = currentMap.chance + "%"; // 확률 텍스트로 변환
+    goToPhase2();
+}
+
+// 1단계 -> 2단계 화면 전환 공통 함수
+function goToPhase2() {
     document.getElementById('mapScreen').classList.add('hidden');
     document.getElementById('comboScreen').classList.remove('hidden');
-    document.getElementById('currentMapDisplay').innerHTML =
-        `선택된 맵: [ ${currentMap.name} ] <span style="font-size: 0.6em; color:#888;">(맵 확률: ${currentMap.chance}%)</span>`;
 
-    initRoster();
+    document.getElementById('currentMapDisplay').innerHTML =
+        `선택된 맵: [ ${currentMap.name} ] <span style="font-size: 0.6em; color:#888;">(확률: ${currentMap.chance})</span>`;
+
+    initRoster(); // 화면이 넘어갈 때 캐릭터 명단 생성
 }
 
 // --- 5. 밴 시스템 로직 --- //
@@ -263,12 +304,21 @@ function generateCombination() {
 
     // ==========================================
 
+    // A그룹 추첨 하기 전 미리 B그룹 상태 확인
+    if (availableData.b.length === 0) {
+        availableData.a = availableData.a.filter(c => c.name !== '우는광대' && c.name !== '기사');
+    }
+
     // [규칙 1] A그룹에서 무조건 1명 차출
     if (availableData.a.length === 0) {
-        alert("구출 그룹의 캐릭터가 모두 밴 되었습니다. 구출은 최소 1명 필수입니다.");
+        alert("구출 그룹에서 뽑을 수 있는 캐릭터가 없습니다.\n(서브구출 그룹 전멸로 인해 우는광대와 기사 출전 불가)");
         return;
     }
+
     const pickedCharA = getWeightedRandomItem(availableData.a);
+
+    // 💡 추첨된 A그룹 캐릭터를 팀 배열 생성 
+    const finalTeam = [{ list: 'a', character: pickedCharA }];
 
     const isA7orA8 = (pickedCharA.name === '우는광대' || pickedCharA.name === '기사');
     if (!isA7orA8) {
@@ -277,52 +327,66 @@ function generateCombination() {
 
     // 캐릭터 간 시너지 (A그룹 초점)
     if (pickedCharA.name === '항해사') {
-        adjustWeight('마술사', -10);
+        adjustWeight('마술사', -2);
         adjustWeight('파로부인', -10);
         adjustWeight('골동품상인', -40);
         adjustWeight('교수', -12);
         adjustWeight('주술사', -25);
+        adjustWeight('심리학자', -5);
     }
     if (pickedCharA.name === '묘지기') {
         adjustWeight('기계공', -18);
     }
 
     // ⭐ 그룹 셀렉션 가중치 (B~F)
-    const groupWeights = { b: 50, c: 40, d: 40, e: 30, f: 25 };
+    const groupWeights = { b: 80, c: 65, d: 70, e: 40, f: 30 };
 
     // ⭐ [추가 조건] 포워드 선택 시 D그룹 가중치 감소
     if (pickedCharA.name === '포워드') {
-        groupWeights.d = 12;
+        groupWeights.d = 20;
         adjustWeight('기계공', 10);
         adjustWeight('심리학자', 10);
         adjustWeight('공군', -15);
     }
 
-    const selectedCombo = [];
+    const selectedGroupsCount = { b: 0, c: 0, d: 0, e: 0, f: 0 };
+    let slotsToFill = 3; // 앞으로 채워야 할 자리 수
 
-    // [규칙 4] 우는광대(A7), 기사(A8) 선택 시 B그룹 무조건 1명 이상 선배정
-    if (isA7orA8) {
-        if (availableData.b.length >= 1) {
-            selectedCombo.push('b');
-        } else {
-            alert("구출이 약한 캐릭터가 뽑혔으나, 서브구출 캐릭터가 부족하여 조합을 만들 수 없습니다.");
-            return;
+    function pickCharacterFromGroup(g) {
+        const picked = getWeightedRandomItem(availableData[g]);
+        finalTeam.push({ list: g, character: picked });
+
+        // 캐릭터 간 시너지 (실시간 증감)
+        if (picked.name === '인형사') adjustWeight('의사', -3);
+        if (picked.name === '무희') adjustWeight('모험가', -10);
+        if (picked.name === '곡예사') adjustWeight('골동품상인', -500);
+        if (picked.name === '골동품상인') adjustWeight('곡예사', -500);
+
+        // 납관사 뽑힐 시 F그룹 확률 대폭 감소
+        if (picked.name === '납관사') {
+            groupWeights.f = 8;
         }
+        availableData[g] = availableData[g].filter(c => c.name !== picked.name);
+        selectedGroupsCount[g]++;
+        slotsToFill--; // 남은 자리 1칸 감소
     }
 
-    // 룰렛을 돌려 남은 빈자리 채우기
+    // 💡 A7(우는광대), A8(기사)가 뽑혔을 경우 B그룹 1자리 강제 할당!
+    if (isA7orA8) {
+        pickCharacterFromGroup('b');
+    }
+
     let failsafe = 0;
-    while (selectedCombo.length < 3 && failsafe < 100) {
+    while (slotsToFill > 0 && failsafe < 100) {
         failsafe++;
         const validGroups = [];
 
         // 현재 추첨 가능한 그룹들만 후보에 올리기
         for (const g of ['b', 'c', 'd', 'e', 'f']) {
-            const currentCount = selectedCombo.filter(x => x === g).length;
+            const currentCount = selectedGroupsCount[g]; // 💡 수정됨
             const maxCap = (g === 'b' || g === 'c') ? 2 : 1;
 
-            // 그룹 제한 수(cap)를 넘지 않았고, 남은 캐릭터 수가 뽑아야 할 수보다 많을 때만 후보 등록
-            if (currentCount < maxCap && availableData[g].length > currentCount) {
+            if (currentCount < maxCap && availableData[g].length > 0) {
                 validGroups.push({ name: g, weight: groupWeights[g] });
             }
         }
@@ -332,34 +396,8 @@ function generateCombination() {
             return;
         }
 
-        // 유틸 함수를 '그룹 뽑기'에 재사용!
         const pickedGroup = getWeightedRandomItem(validGroups);
-        selectedCombo.push(pickedGroup.name);
-    }
-
-    // 그룹별 뽑힌 횟수 카운트 합산
-    const groupCounts = {};
-    selectedCombo.forEach(g => { groupCounts[g] = (groupCounts[g] || 0) + 1; });
-
-    const finalTeam = [{ list: 'a', character: pickedCharA }];
-
-    // 나머지 3명 캐릭터 가중치 기반 추첨
-    for (const [g, count] of Object.entries(groupCounts)) {
-        for (let i = 0; i < count; i++) {
-            if (availableData[g].length === 0) continue;
-
-            const picked = getWeightedRandomItem(availableData[g]);
-            finalTeam.push({ list: g, character: picked });
-
-            // 캐릭터 간 시너지 (실시간 증감)
-            if (picked.name === '인형사') adjustWeight('의사', -3);
-            if (picked.name === '무희') adjustWeight('모험가', -10);
-            if (picked.name === '곡예사') adjustWeight('골동품상인', -500);
-            if (picked.name === '골동품상인') adjustWeight('곡예사', -500);
-
-            // 중복 픽 방지
-            availableData[g] = availableData[g].filter(c => c.name !== picked.name);
-        }
+        pickCharacterFromGroup(pickedGroup.name);
     }
 
     finalTeam.sort((a, b) => a.list.localeCompare(b.list));
@@ -380,12 +418,12 @@ function renderResult(team) {
         f: '해독'
     };
 
-       team.forEach(member => {
+    team.forEach(member => {
         const card = document.createElement('div');
         card.className = 'result-card';
-        
+
         const charName = member.character.name;
-        
+
         // 💡 이름 6글자 이상이면 'long-name' 클래스 추가
         const isLongName = charName.length >= 6;
         const nameClass = isLongName ? "char-name long-name" : "char-name";
@@ -409,6 +447,11 @@ function resetToMapSelection() {
     document.getElementById('resultArea').innerHTML = '';
     document.getElementById('comboScreen').classList.add('hidden');
     document.getElementById('mapScreen').classList.remove('hidden');
+
+    // 수동 선택 드롭다운 상태 초기화
+    document.getElementById('mapDropdown').value = "";
+    document.getElementById('manualMapSelectArea').classList.add('hidden');
+    document.getElementById('manualMapConfirmArea').classList.add('hidden');
 }
 
 // =========================================
@@ -426,7 +469,7 @@ const trackList = [
     { title: "생존자 대기실", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/a_bgm_survivor.mp3" },
 ];
 
-let currentTrackIndex = 0; 
+let currentTrackIndex = 0;
 
 // 페이지 로드 시 플레이리스트를 생성하고 첫 곡을 세팅
 window.addEventListener('DOMContentLoaded', () => {
@@ -436,23 +479,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
     bgmAudio.addEventListener('ended', () => {
         bgmAudio.currentTime = 0; // 재생 위치를 처음으로
-        bgmAudio.play();          
+        bgmAudio.play();
     });
 
     // 1. 플레이리스트에 곡들 추가
     trackList.forEach((track, index) => {
         const li = document.createElement('li');
         li.innerText = track.title;
-        // 첫 번째 곡에 활성화 표시
         if (index === currentTrackIndex) li.classList.add('active');
 
-        // 곡을 클릭시 실행
         li.onclick = () => playTrack(index);
         playlistUl.appendChild(li);
     });
 
-    // 2. 초기 곡 세팅 (재생은 안 함, 세팅만)
     bgmAudio.src = trackList[currentTrackIndex].url;
+
+    const mapDropdown = document.getElementById('mapDropdown');
+    mapData.forEach(map => {
+        const option = document.createElement('option');
+        option.value = map.name;
+        option.textContent = map.name;
+        option.style.color = "#333";
+        mapDropdown.appendChild(option);
+    });
 });
 
 // 곡 목록(드롭업) 열기/닫기 함수
