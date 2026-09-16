@@ -83,6 +83,18 @@ button {
     transform: scale(1.05);
 }
 
+.btn-fourth {
+    background-color: #7a8293;
+    font-size: 1.0em;
+    border-radius: 8px;
+    color: white;
+}
+
+.btn-fourth:hover {
+    background-color: #47494f;
+    transform: scale(1.05);
+}
+
 /* 맵 정보 표시 영역 */
 .map-display {
     font-size: 1.5em;
