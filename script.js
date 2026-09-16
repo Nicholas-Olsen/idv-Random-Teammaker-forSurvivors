@@ -115,7 +115,7 @@ function initRoster() {
 
             card.innerHTML = `
                 <img src="${char.img}" alt="${char.name}" class="char-img">
-                <div class="ban-overlay">BANNED</div>
+                <div class="ban-overlay">X</div>
             `;
             rosterArea.appendChild(card);
         });
