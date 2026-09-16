@@ -6,41 +6,61 @@ body { font-family: 'Malgun Gothic', sans-serif; text-align: center; padding: 30
 
 /* 버튼 스타일 */
 button { padding: 10px 20px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 5px; margin: 5px; transition: 0.2s; font-weight: bold; }
-.btn-primary { background-color: #007bff; color: white; }
-.btn-primary:hover { background-color: #0056b3; }
-.btn-success { background-color: #28a745; color: white; }
-.btn-success:hover { background-color: #218838; }
-.btn-danger { background-color: #dc3545; color: white; }
-.btn-danger:hover { background-color: #c82333; }
-.btn-warning { background-color: #ffc107; color: black; }
-.btn-warning:hover { background-color: #e0a800; }
-.btn-secondary { background-color: #6c757d; color: white; }
-.btn-secondary:hover { background-color: #5a6268; }
+.btn-primary { background-color: #00a1e6; color: white; }
+.btn-primary:hover { background-color: #156cc8; }
+.btn-success { background-color: #41b838; color: white; }
+.btn-success:hover { background-color: #0d863a; }
+.btn-danger { background-color: #f64444; color: white; }
+.btn-danger:hover { background-color: #9f2222; }
+.btn-warning { background-color: #fab32f; color: black; }
+.btn-warning:hover { background-color: #bd8907; }
+.btn-secondary { background-color: #7a8893; color: white; }
+.btn-secondary:hover { background-color: #596671; }
 
 /* 맵 정보 표시 영역 */
 .map-display { font-size: 1.5em; font-weight: bold; color: #d9534f; margin: 15px 0; padding: 15px; background-color: #fcf8e3; border-radius: 10px; border: 1px solid #faebcc; }
 
-/* 전체 캐릭터 로스터(명단) 그리드 */
+/* 전체 캐릭터 로스터 그리드 */
 .roster-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 1px solid #ddd; }
 
 /* 캐릭터 카드 (정사각형) */
 .roster-card {
-    width: 70px; height: 70px; background: #fff; border: 2px solid #ccc; border-radius: 8px;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    width: 70px; height: 70px; 
+    background: #fff; border: 2px solid #ccc; border-radius: 8px;
+    display: flex; justify-content: center; align-items: center;
     cursor: pointer; position: relative; overflow: hidden; transition: 0.2s;
     box-sizing: border-box;
+    padding: 0; /* 이미지가 카드를 꽉 채우도록 패딩 없앰 */
 }
 .roster-card:hover { transform: scale(1.05); }
-.roster-name { font-weight: bold; font-size: 1.1em; color: #333; }
+
+.roster-name { font-weight: bold; font-size: 0.9em; color: #333; }
 .roster-group { font-size: 0.7em; color: #888; }
 
+.char-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 비율 유지 */
+    display: block;
+}
+
+/* 뽑기 결과 카드에 들어갈 이미지 */
+.result-char-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+}
+
 /* 밴 '지정 중'일 때 (빨간 테두리) */
-.roster-card.staged-ban { border: 4px solid #dc3545; transform: scale(0.95); }
+.roster-card.staged-ban { border: 4px solid #d23f3d; transform: scale(0.95); }
 
 /* 밴 '완료' 되었을 때 (검은색 반투명 오버레이) */
 .ban-overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7); color: #ff4d4d;
+    background: rgba(0, 0, 0, 0.596); color: #ea6161;
     display: flex; justify-content: center; align-items: center;
     font-size: 0.8em; font-weight: bold; opacity: 0; pointer-events: none; transition: 0.3s;
 }
@@ -49,7 +69,7 @@ button { padding: 10px 20px; font-size: 1.1em; cursor: pointer; border: none; bo
 /* 뽑기 결과 카드 영역 */
 .result-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 30px; }
 .result-card { background: #fdfdfd; padding: 15px; border-radius: 10px; border: 1px solid #007bff; width: 140px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-.result-card .list-name { font-size: 0.9em; color: #007bff; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
+.result-card .list-name { font-size: 0.9em; color: #2e88d2; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
 .result-card .char-name { font-size: 1.5em; font-weight: bold; color: #333; margin-bottom: 10px; }
 .result-card .weight-info { font-size: 0.8em; color: #555; }
 
