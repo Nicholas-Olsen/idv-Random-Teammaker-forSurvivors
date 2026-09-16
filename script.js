@@ -24,13 +24,13 @@ const characterData = {
     b: [{ name: '투우사', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s50.jpg" },
     { name: '인형사', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s42.jpg" },
     { name: '기상학자', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s46.jpg" },
-    { name: '항공전문가', weight: 38 },
+    { name: '항공전문가', weight: 38, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s40.jpg" },
     { name: '조향사', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s13.jpg" },
     { name: '무언극 아티스트', weight: 30, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s51.jpg" },
     { name: '기자', weight: 5, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s39.jpg" }],
 
-    c: [{ name: '공군', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s8.jpg" },
-    { name: '화재조사관', weight: 30, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s43.jpg" },
+    c: [{ name: '공군', weight: 33, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s8.jpg" },
+    { name: '화재조사관', weight: 31, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s43.jpg" },
     { name: '장난감상인', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s30.jpg" },
     { name: '환자', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s31.jpg" },
     { name: '치어리더', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s41.jpg" },
@@ -290,6 +290,7 @@ function generateCombination() {
         groupWeights.d = 12;
         adjustWeight('기계공', 10);
         adjustWeight('심리학자', 10);
+        adjustWeight('공군', -15);
     }
 
     const selectedCombo = [];
