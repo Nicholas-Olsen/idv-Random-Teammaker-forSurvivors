@@ -49,7 +49,7 @@ button {
 }
 
 .btn-success:hover {
-    background-color: #097548;
+    background-color: #0e945c;
     transform: scale(1.1);
 }
 
@@ -204,7 +204,7 @@ button {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 10px;
     margin-top: 30px;
 }
 
@@ -213,7 +213,7 @@ button {
     padding: 11px;
     border-radius: 10px;
     border: 1px solid #007bff;
-    width: 140px;
+    width: 130px;
     max-height: 180px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -427,29 +427,38 @@ button {
     }
 
     .roster-card {
-        width: 50px;
-        height: 50px;
+        width: 46px;
+        height: 46px;
         border-radius: 6px;
     }
 
     /* 5. 뽑기 결과 카드 크기 축소 */
     .result-container {
-        gap: 10px;
+        gap: 5px;
         margin-top: 15px;
         margin-bottom: 20px;
     }
 
     .result-card {
-        width: 110px;
-        padding: 10px;
+        width: 90px;
+        padding: 4px;
     }
 
+    .result-char-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .result-card .weight-info {
+    font-size: 0.7em;
+}
+
     .result-card .char-name {
-        font-size: 1.1em;
+        font-size: 1.0em;
     }
 
     .result-card .char-name.long-name {
-        font-size: 0.85em !important;
+        font-size: 0.82em !important;
     }
 
 }
