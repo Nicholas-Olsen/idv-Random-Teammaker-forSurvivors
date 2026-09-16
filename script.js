@@ -56,12 +56,12 @@ const characterData = {
     { name: '바텐더', weight: 24, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s23.jpg" },
     { name: '여자아이', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s34.jpg" },
     { name: '소설가', weight: 18, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s33.jpg" },
-    { name: '화가', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s28.jpg"  }],
+    { name: '화가', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s28.jpg" }],
 
     f: [{ name: '파로부인', weight: 45, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s44.jpg" },
     { name: '작곡가', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s38.jpg" },
     { name: '기계공', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s10.jpg" },
-    { name: '죄수', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s26.jpg"  },
+    { name: '죄수', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s26.jpg" },
     { name: '우배부', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s24.jpg" },
     { name: '무희', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s15.jpg" },
     { name: '변호사', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s2.jpg" },
@@ -126,7 +126,7 @@ function selectMap() {
     document.getElementById('mapScreen').classList.add('hidden');
     document.getElementById('comboScreen').classList.remove('hidden');
     document.getElementById('currentMapDisplay').innerHTML =
-        `선택된 맵: [ ${currentMap.name} ] <span style="font-size: 0.6em; color:#888;">(등장 확률: ${currentMap.chance}%)</span>`;
+        `선택된 맵: [ ${currentMap.name} ] <span style="font-size: 0.6em; color:#888;">(맵 확률: ${currentMap.chance}%)</span>`;
 
     initRoster();
 }
@@ -253,9 +253,9 @@ function generateCombination() {
     applyMapSynergy('야만인', ['달빛강공원'], 10);
     applyMapSynergy('포워드', ['달빛강공원'], 5);
 
-    applyMapSynergy('기계공', ['성심병원'], 25);
-    applyMapSynergy('기계공', ['차이나타운', '호수마을', '에버슬리핑타운', '군수공장'], 20);
-    applyMapSynergy('기계공', ['레오의기억'], 10);
+    applyMapSynergy('기계공', ['성심병원'], 22);
+    applyMapSynergy('기계공', ['차이나타운', '호수마을', '에버슬리핑타운', '군수공장'], 18);
+    applyMapSynergy('기계공', ['레오의기억'], 12);
     applyMapSynergy('기계공', ['붉은성당', '돌아올 수 없는 숲'], -10);
     applyMapSynergy('기계공', ['달빛강공원'], -15);
 
@@ -279,7 +279,7 @@ function generateCombination() {
         adjustWeight('파로부인', -10);
     }
     if (pickedCharA.name === '묘지기') {
-        adjustWeight('기계공', -10);
+        adjustWeight('기계공', -18);
     }
 
     // ⭐ 그룹 셀렉션 가중치 (B~F)
@@ -366,11 +366,28 @@ function renderResult(team) {
     const resultArea = document.getElementById('resultArea');
     resultArea.innerHTML = '';
 
+    const roleNames = {
+        a: '구출',
+        b: '보조구출',
+        c: '보조구출',
+        d: '커버',
+        e: '견제',
+        f: '해독'
+    };
+
     team.forEach(member => {
         const card = document.createElement('div');
         card.className = 'result-card';
+
+        const charName = member.character.name;
+
+        // 💡 이름이 6글자 이상일 경우 폰트 크기를 줄이고 줄바꿈 허용
+        let nameStyle = "";
+        if (charName.length >= 6) {
+            nameStyle = "font-size: 0.9em; line-height: 1.2; word-break: keep-all; margin-bottom: 5px;";
+        }
         card.innerHTML = `
-            <div class="list-name">그룹 ${member.list}</div>
+            <div class="list-name">${roleNames[member.list]}</div>
             <img src="${member.character.img}" alt="${member.character.name}" class="result-char-img">
             <div class="char-name">${member.character.name}</div>
             <div class="weight-info">당첨 확률: ${member.character.chance}%</div>
@@ -387,4 +404,72 @@ function resetToMapSelection() {
     document.getElementById('resultArea').innerHTML = '';
     document.getElementById('comboScreen').classList.add('hidden');
     document.getElementById('mapScreen').classList.remove('hidden');
+}
+
+// =========================================
+// 🎵 BGM 플레이리스트 로직
+// =========================================
+
+// 곡 목록 (원하시는 링크와 제목으로 자유롭게 수정하세요)
+const trackList = [
+    { title: "Living room", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Living room.mp3" },
+    { title: "Alice's Apartment", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Alice's Apartment.mp3" },
+    { title: "Logic Path", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Logic Path.mp3" },
+    { title: "The Fluttering Clouds", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_The Fluttering Clouds.mp3" },
+    { title: "COA 4 Registration", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_COA 4 Registration.mp3" },
+    { title: "Sunset Beach", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Sunset Beach.mp3" },
+    { title: "생존자 대기실", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/a_bgm_survivor.mp3" },
+];
+
+let currentTrackIndex = 0; 
+
+// 페이지 로드 시 플레이리스트를 생성하고 첫 곡을 세팅
+window.addEventListener('DOMContentLoaded', () => {
+    const playlistUl = document.getElementById('playlist-ul');
+    const bgmAudio = document.getElementById('bgm-audio');
+    bgmAudio.loop = true;
+
+    bgmAudio.addEventListener('ended', () => {
+        bgmAudio.currentTime = 0; // 재생 위치를 처음으로
+        bgmAudio.play();          
+    });
+
+    // 1. 플레이리스트에 곡들 추가
+    trackList.forEach((track, index) => {
+        const li = document.createElement('li');
+        li.innerText = track.title;
+        // 첫 번째 곡에 활성화 표시
+        if (index === currentTrackIndex) li.classList.add('active');
+
+        // 곡을 클릭시 실행
+        li.onclick = () => playTrack(index);
+        playlistUl.appendChild(li);
+    });
+
+    // 2. 초기 곡 세팅 (재생은 안 함, 세팅만)
+    bgmAudio.src = trackList[currentTrackIndex].url;
+});
+
+// 곡 목록(드롭업) 열기/닫기 함수
+function togglePlaylist() {
+    document.getElementById('playlist-menu').classList.toggle('hidden');
+}
+
+// 특정 곡을 선택하여 재생하는 함수
+function playTrack(index) {
+    const bgmAudio = document.getElementById('bgm-audio');
+    const listItems = document.querySelectorAll('#playlist-ul li');
+
+    // 모든 리스트의 파란색(active) 표시 제거
+    listItems.forEach(li => li.classList.remove('active'));
+
+    // 선택한 곡에 파란색 표시
+    listItems[index].classList.add('active');
+
+    // 오디오 소스 변경 및 재생
+    bgmAudio.src = trackList[index].url;
+    bgmAudio.play(); // 곡을 선택하면 자동으로 재생 시작
+
+    // 곡을 선택하면 플레이리스트 창을 자동으로 닫음
+    togglePlaylist();
 }
