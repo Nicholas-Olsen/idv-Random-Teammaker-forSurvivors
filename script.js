@@ -11,6 +11,7 @@ const mapData = [
     { name: '돌아올 수 없는 숲', weight: 50 }
 ];
 
+// 도둑, 카우보이 제외
 const characterData = {
     a: [{ name: '묘지기', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s25.jpg" },
     { name: '항해사', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s22.jpg" },
@@ -42,7 +43,8 @@ const characterData = {
     d: [{ name: '주술사', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s19.jpg" },
     { name: '궁수', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s47.jpg" },
     { name: '골동품상인', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s37.jpg" },
-    { name: '탐사원', weight: 10, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s18.jpg" }],
+    { name: '탐사원', weight: 10, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s18.jpg" },
+    { name: '타자', weight: 2, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s29.jpg" }],
 
     e: [{ name: '환등사', weight: 60, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s49.jpg" },
     { name: '행운아', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s52.jpg" },
@@ -216,14 +218,15 @@ function generateCombination() {
             adjustWeight(targetName, amount);
         }
     }
+
     //⭐ 맵별 시너지 일괄 세팅
     applyMapSynergy('장난감상인', ['호수마을', '레오의기억'], 20);
     applyMapSynergy('장난감상인', ['군수공장', '붉은성당'], -15);
 
-    applyMapSynergy('환자', ['레오의기억', '달빛강공원'], 20);
-    applyMapSynergy('항공전문가', ['달빛강공원'], 20);
-    applyMapSynergy('곡예사', ['달빛강공원'], 20);
-    applyMapSynergy('기상학자', ['달빛강공원'], 20);
+    applyMapSynergy('환자', ['레오의기억', '달빛강공원'], 30);
+    applyMapSynergy('항공전문가', ['달빛강공원'], 30);
+    applyMapSynergy('곡예사', ['달빛강공원'], 25);
+    applyMapSynergy('기상학자', ['달빛강공원'], 30);
 
     applyMapSynergy('행운아', ['성심병원', '돌아올 수 없는 숲', '레오의기억', '차이나타운'], 10);
 
@@ -330,6 +333,7 @@ function generateCombination() {
         const pickedGroup = getWeightedRandomItem(validGroups);
         selectedCombo.push(pickedGroup.name);
     }
+
     // 그룹별 뽑힌 횟수 카운트 합산
     const groupCounts = {};
     selectedCombo.forEach(g => { groupCounts[g] = (groupCounts[g] || 0) + 1; });
@@ -373,26 +377,26 @@ function renderResult(team) {
         f: '해독'
     };
 
-    team.forEach(member => {
+       team.forEach(member => {
         const card = document.createElement('div');
         card.className = 'result-card';
-
+        
         const charName = member.character.name;
+        
+        // 💡 이름 6글자 이상이면 'long-name' 클래스 추가
+        const isLongName = charName.length >= 6;
+        const nameClass = isLongName ? "char-name long-name" : "char-name";
 
-        // 💡 이름이 6글자 이상일 경우 폰트 크기를 줄이고 줄바꿈 허용
-        let nameStyle = "";
-        if (charName.length >= 6) {
-            nameStyle = "font-size: 0.9em; line-height: 1.2; word-break: keep-all; margin-bottom: 5px;";
-        }
         card.innerHTML = `
             <div class="list-name">${roleNames[member.list]}</div>
-            <img src="${member.character.img}" alt="${member.character.name}" class="result-char-img">
-            <div class="char-name">${member.character.name}</div>
-            <div class="weight-info">당첨 확률: ${member.character.chance}%</div>
+            <img src="${member.character.img}" alt="${charName}" class="result-char-img">
+            <div class="${nameClass}">${charName}</div>
+            <div class="weight-info">확률: ${member.character.chance}%</div>
         `;
         resultArea.appendChild(card);
     });
 }
+
 // --- 완전 초기화 (Reset) --- //
 function resetToMapSelection() {
     currentMap = null;
