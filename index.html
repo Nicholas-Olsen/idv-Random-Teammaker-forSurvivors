@@ -13,9 +13,21 @@
 
     <!-- [1단계] 맵 선택 화면 -->
     <div id="mapScreen" class="screen">
-        <h1>1단계: 맵 선택</h1>
+        <h1>1단계: 전장(맵) 선택</h1>
         <p>9개 맵 중 하나가 선택됩니다.</p>
-        <button class="btn-primary" onclick="selectMap()">맵 뽑기</button>
+        <button class="btn-primary" onclick="selectMap()">맵 랜덤</button>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #ccc;">
+        <p style="color: #666;">또는</p>
+        <button class="btn-fourth" onclick="toggleManualMapSelect()">직접 고르기</button>
+
+        <div id="manualMapSelectArea" class="hidden" style="margin-top: 20px;">
+            <select id="mapDropdown" onchange="onMapDropdownChange()"
+                style="padding: 10px; font-size: 1.1em; border-radius: 5px; border: 1px solid #ccc; width: 70%; max-width: 300px; cursor: pointer; color: gray;">
+                <option value="" style="color: gray;">-- 맵을 선택하세요 --</option>
+            </select>
+            <button class="btn-success" onclick="confirmManualMap()">선택 완료</button>
+        </div>
     </div>
 
     <!-- [2단계] 조합 & 밴픽 화면 -->
@@ -33,7 +45,8 @@
             </div>
             <!-- 밴 편집 모드 버튼 -->
             <div id="banButtons" class="hidden">
-                <p class="info-text" style="color:rgb(255, 79, 79); font-weight:bold; font-size: 1.1em;">캐릭터를 클릭해 금지하세요.</p>
+                <p class="info-text" style="color:rgb(255, 79, 79); font-weight:bold; font-size: 1.1em;">캐릭터를 클릭해 금지하세요.
+                </p>
                 <button class="btn-danger" onclick="applyBans()">밴 지정 완료</button>
                 <button class="btn-secondary" onclick="cancelBanMode()">취소</button>
             </div>
@@ -53,7 +66,7 @@
             <ul id="playlist-ul">
             </ul>
         </div>
-    
+
         <!-- 아이콘과 BGM 제목이 있는 상단바 -->
         <div class="bgm-header">
             <div class="bgm-title"><span class="icon">🎵</span> BGM Player</div>
