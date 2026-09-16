@@ -216,3 +216,117 @@ function generateCombination() {
             adjustWeight(targetName, amount);
         }
     }
+    //⭐ 맵별 시너지 일괄 세팅
+    applyMapSynergy('장난감상인', ['호수마을', '레오의기억'], 20);
+    applyMapSynergy('장난감상인', ['군수공장', '붉은성당'], -15);
+
+    applyMapSynergy('환자', ['레오의기억', '달빛강공원'], 20);
+    applyMapSynergy('항공전문가', ['달빛강공원'], 20);
+    applyMapSynergy('곡예사', ['달빛강공원'], 20);
+    applyMapSynergy('기상학자', ['달빛강공원'], 20);
+
+    applyMapSynergy('행운아', ['성심병원', '돌아올 수 없는 숲', '레오의기억', '차이나타운'], 10);
+
+    applyMapSynergy('모험가', ['군수공장', '레오의기억', '돌아올 수 없는 숲'], 25);
+    applyMapSynergy('모험가', ['성심병원', '호수마을'], 20);
+    applyMapSynergy('모험가', ['에버슬리핑타운', '차이나타운'], 10);
+
+    applyMapSynergy('샤먼', ['에버슬리핑타운', '차이나타운', '성심병원'], 30);
+    applyMapSynergy('샤먼', ['붉은성당'], 15);
+    applyMapSynergy('샤먼', ['군수공장'], -15);
+
+    applyMapSynergy('납관사', ['차이나타운', '달빛강공원'], 10);
+    applyMapSynergy('납관사', ['레오의기억', '호수마을'], 10);
+    applyMapSynergy('납관사', ['붉은성당'], -15);
+    applyMapSynergy('납관사', ['성심병원'], -10);
+
+    applyMapSynergy('여자아이', ['차이나타운', '달빛강공원'], 10);
+    applyMapSynergy('여자아이', ['붉은성당'], -15);
+    applyMapSynergy('여자아이', ['성심병원'], -10);
+
+    applyMapSynergy('맹인', ['성심병원'], 5);
+    applyMapSynergy('맹인', ['붉은성당', '돌아올 수 없는 숲'], -1);
+
+    applyMapSynergy('용병', ['달빛강공원'], 10);
+    applyMapSynergy('탈출마스터', ['달빛강공원'], 10);
+    applyMapSynergy('야만인', ['달빛강공원'], 10);
+    applyMapSynergy('포워드', ['달빛강공원'], 5);
+
+    applyMapSynergy('기계공', ['성심병원'], 22);
+    applyMapSynergy('기계공', ['차이나타운', '호수마을', '에버슬리핑타운', '군수공장'], 18);
+    applyMapSynergy('기계공', ['레오의기억'], 12);
+    applyMapSynergy('기계공', ['붉은성당', '돌아올 수 없는 숲'], -10);
+    applyMapSynergy('기계공', ['달빛강공원'], -15);
+
+    // ==========================================
+
+    // [규칙 1] A그룹에서 무조건 1명 차출
+    if (availableData.a.length === 0) {
+        alert("구출 그룹의 캐릭터가 모두 밴 되었습니다. 구출은 최소 1명 필수입니다.");
+        return;
+    }
+    const pickedCharA = getWeightedRandomItem(availableData.a);
+
+    const isA7orA8 = (pickedCharA.name === '우는광대' || pickedCharA.name === '기사');
+    if (!isA7orA8) {
+        availableData.b = availableData.b.filter(c => c.name !== '기자');
+    }
+
+    // 캐릭터 간 시너지 (A그룹 초점)
+    if (pickedCharA.name === '항해사') {
+        adjustWeight('마술사', -10);
+        adjustWeight('파로부인', -10);
+    }
+    if (pickedCharA.name === '묘지기') {
+        adjustWeight('기계공', -18);
+    }
+
+    // ⭐ 그룹 셀렉션 가중치 (B~F)
+    const groupWeights = { b: 50, c: 40, d: 40, e: 30, f: 25 };
+
+    // ⭐ [추가 조건] 포워드 선택 시 D그룹 가중치 감소
+    if (pickedCharA.name === '포워드') {
+        groupWeights.d = 12;
+        adjustWeight('기계공', 10);
+        adjustWeight('심리학자', 10);
+        adjustWeight('공군', -15);
+    }
+
+    const selectedCombo = [];
+
+    // [규칙 4] 우는광대(A7), 기사(A8) 선택 시 B그룹 무조건 1명 이상 선배정
+    if (isA7orA8) {
+        if (availableData.b.length >= 1) {
+            selectedCombo.push('b');
+        } else {
+            alert("구출이 약한 캐릭터가 뽑혔으나, 서브구출 캐릭터가 부족하여 조합을 만들 수 없습니다.");
+            return;
+        }
+    }
+
+    // 룰렛을 돌려 남은 빈자리 채우기
+    let failsafe = 0;
+    while (selectedCombo.length < 3 && failsafe < 100) {
+        failsafe++;
+        const validGroups = [];
+
+        // 현재 추첨 가능한 그룹들만 후보에 올리기
+        for (const g of ['b', 'c', 'd', 'e', 'f']) {
+            const currentCount = selectedCombo.filter(x => x === g).length;
+            const maxCap = (g === 'b' || g === 'c') ? 2 : 1;
+
+            // 그룹 제한 수(cap)를 넘지 않았고, 남은 캐릭터 수가 뽑아야 할 수보다 많을 때만 후보 등록
+            if (currentCount < maxCap && availableData[g].length > currentCount) {
+                validGroups.push({ name: g, weight: groupWeights[g] });
+            }
+        }
+
+        if (validGroups.length === 0) {
+            alert("밴 된 캐릭터가 너무 많아 4인 조합을 구성할 수 없습니다.");
+            return;
+        }
+
+        // 유틸 함수를 '그룹 뽑기'에 재사용!
+        const pickedGroup = getWeightedRandomItem(validGroups);
+        selectedCombo.push(pickedGroup.name);
+    }
