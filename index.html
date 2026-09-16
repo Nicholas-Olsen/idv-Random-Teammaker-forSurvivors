@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
+
 <body>
 
     <!-- [1단계] 맵 선택 화면 -->
@@ -18,9 +20,9 @@
 
     <!-- [2단계] 조합 & 밴픽 화면 -->
     <div id="comboScreen" class="screen hidden">
-        <h1>2단계: 팀 조합 생성기</h1>
+        <h1>2단계: 팀 조합 생성</h1>
         <div id="currentMapDisplay" class="map-display"></div>
-        
+
         <!-- 컨트롤 버튼 영역 -->
         <div id="controlsArea">
             <!-- 기본 모드 버튼 -->
@@ -36,14 +38,15 @@
                 <button class="btn-secondary" onclick="cancelBanMode()">취소</button>
             </div>
         </div>
+        <!-- 최종 조합 결과 출력 영역 -->
+        <div class="result-container" id="resultArea"></div>
 
         <!-- 캐릭터 전체 목록 (로스터) -->
         <div class="roster-container" id="rosterArea">
         </div>
 
-        <!-- 최종 조합 결과 출력 영역 -->
-        <div class="result-container" id="resultArea"></div>
     </div>
 
 </body>
+
 </html>
