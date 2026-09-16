@@ -115,7 +115,8 @@ button {
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 18px;
+    margin-bottom: 50px;
     padding: 20px;
     background: #f8f9fa;
     border-radius: 10px;
