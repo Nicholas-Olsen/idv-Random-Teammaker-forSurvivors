@@ -36,6 +36,8 @@ button {
     font-size: 1.4em !important;
     background-color: #00a1e6;
     color: white;
+    padding: 30 20 10px;
+    border-radius: 6px;
 }
 
 .btn-primary:hover {
@@ -86,7 +88,7 @@ button {
 .btn-fourth {
     background-color: #7a8293;
     font-size: 1.0em;
-    border-radius: 8px;
+    border-radius: 6px;
     color: white;
 }
 
@@ -239,7 +241,7 @@ button {
 }
 
 .result-card .char-name {
-    font-size: 1.5em;
+    font-size: 1.32em;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
@@ -472,11 +474,11 @@ button {
     }
 
     .result-card .char-name {
-        font-size: 1.0em;
+        font-size: 0.95em;
     }
 
     .result-card .char-name.long-name {
-        font-size: 0.82em !important;
+        font-size: 0.80em !important;
     }
 
 }
@@ -516,7 +518,7 @@ button {
     }
 
     .result-card .char-name.long-name {
-        font-size: 0.75em !important;
+        font-size: 0.72em !important;
     }
 
 }
