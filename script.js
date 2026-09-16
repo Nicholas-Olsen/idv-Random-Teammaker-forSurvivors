@@ -458,7 +458,7 @@ function resetToMapSelection() {
 // 🎵 BGM 플레이리스트 로직
 // =========================================
 
-// 곡 목록 (원하시는 링크와 제목으로 자유롭게 수정하세요)
+// 곡 목록 
 const trackList = [
     { title: "Living room", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Living room.mp3" },
     { title: "Alice's Apartment", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Alice's Apartment.mp3" },
@@ -467,6 +467,7 @@ const trackList = [
     { title: "COA 4 Registration", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_COA 4 Registration.mp3" },
     { title: "Sunset Beach", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Sunset Beach.mp3" },
     { title: "생존자 대기실", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/a_bgm_survivor.mp3" },
+    { title: "Decoding...", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_DECODING.mp3" }
 ];
 
 let currentTrackIndex = 0;
