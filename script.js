@@ -330,3 +330,144 @@ function generateCombination() {
         const pickedGroup = getWeightedRandomItem(validGroups);
         selectedCombo.push(pickedGroup.name);
     }
+    // 그룹별 뽑힌 횟수 카운트 합산
+    const groupCounts = {};
+    selectedCombo.forEach(g => { groupCounts[g] = (groupCounts[g] || 0) + 1; });
+
+    const finalTeam = [{ list: 'a', character: pickedCharA }];
+
+    // 나머지 3명 캐릭터 가중치 기반 추첨
+    for (const [g, count] of Object.entries(groupCounts)) {
+        for (let i = 0; i < count; i++) {
+            if (availableData[g].length === 0) continue;
+
+            const picked = getWeightedRandomItem(availableData[g]);
+            finalTeam.push({ list: g, character: picked });
+
+            // 캐릭터 간 시너지 (실시간 증감)
+            if (picked.name === '인형사') adjustWeight('의사', -3);
+            if (picked.name === '무희') adjustWeight('모험가', -10);
+            if (picked.name === '곡예사') adjustWeight('골동품상인', -500);
+            if (picked.name === '골동품상인') adjustWeight('곡예사', -500);
+
+            // 중복 픽 방지
+            availableData[g] = availableData[g].filter(c => c.name !== picked.name);
+        }
+    }
+
+    finalTeam.sort((a, b) => a.list.localeCompare(b.list));
+    renderResult(finalTeam);
+}
+
+// 렌더링 함수 //
+function renderResult(team) {
+    const resultArea = document.getElementById('resultArea');
+    resultArea.innerHTML = '';
+
+    const roleNames = {
+        a: '구출',
+        b: '보조구출',
+        c: '보조구출',
+        d: '커버',
+        e: '견제',
+        f: '해독'
+    };
+
+    team.forEach(member => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+
+        const charName = member.character.name;
+
+        // 💡 이름이 6글자 이상일 경우 폰트 크기를 줄이고 줄바꿈 허용
+        let nameStyle = "";
+        if (charName.length >= 6) {
+            nameStyle = "font-size: 0.9em; line-height: 1.2; word-break: keep-all; margin-bottom: 5px;";
+        }
+        card.innerHTML = `
+            <div class="list-name">${roleNames[member.list]}</div>
+            <img src="${member.character.img}" alt="${member.character.name}" class="result-char-img">
+            <div class="char-name">${member.character.name}</div>
+            <div class="weight-info">당첨 확률: ${member.character.chance}%</div>
+        `;
+        resultArea.appendChild(card);
+    });
+}
+// --- 완전 초기화 (Reset) --- //
+function resetToMapSelection() {
+    currentMap = null;
+    bannedChars.clear();
+    tempBannedChars.clear();
+
+    document.getElementById('resultArea').innerHTML = '';
+    document.getElementById('comboScreen').classList.add('hidden');
+    document.getElementById('mapScreen').classList.remove('hidden');
+}
+
+// =========================================
+// 🎵 BGM 플레이리스트 로직
+// =========================================
+
+// 곡 목록 (원하시는 링크와 제목으로 자유롭게 수정하세요)
+const trackList = [
+    { title: "Living room", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Living room.mp3" },
+    { title: "Alice's Apartment", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Alice's Apartment.mp3" },
+    { title: "Logic Path", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Logic Path.mp3" },
+    { title: "The Fluttering Clouds", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_The Fluttering Clouds.mp3" },
+    { title: "COA 4 Registration", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_COA 4 Registration.mp3" },
+    { title: "Sunset Beach", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Sunset Beach.mp3" },
+    { title: "생존자 대기실", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/a_bgm_survivor.mp3" },
+];
+
+let currentTrackIndex = 0; 
+
+// 페이지 로드 시 플레이리스트를 생성하고 첫 곡을 세팅
+window.addEventListener('DOMContentLoaded', () => {
+    const playlistUl = document.getElementById('playlist-ul');
+    const bgmAudio = document.getElementById('bgm-audio');
+    bgmAudio.loop = true;
+
+    bgmAudio.addEventListener('ended', () => {
+        bgmAudio.currentTime = 0; // 재생 위치를 처음으로
+        bgmAudio.play();          
+    });
+
+    // 1. 플레이리스트에 곡들 추가
+    trackList.forEach((track, index) => {
+        const li = document.createElement('li');
+        li.innerText = track.title;
+        // 첫 번째 곡에 활성화 표시
+        if (index === currentTrackIndex) li.classList.add('active');
+
+        // 곡을 클릭시 실행
+        li.onclick = () => playTrack(index);
+        playlistUl.appendChild(li);
+    });
+
+    // 2. 초기 곡 세팅 (재생은 안 함, 세팅만)
+    bgmAudio.src = trackList[currentTrackIndex].url;
+});
+
+// 곡 목록(드롭업) 열기/닫기 함수
+function togglePlaylist() {
+    document.getElementById('playlist-menu').classList.toggle('hidden');
+}
+
+// 특정 곡을 선택하여 재생하는 함수
+function playTrack(index) {
+    const bgmAudio = document.getElementById('bgm-audio');
+    const listItems = document.querySelectorAll('#playlist-ul li');
+
+    // 모든 리스트의 파란색(active) 표시 제거
+    listItems.forEach(li => li.classList.remove('active'));
+
+    // 선택한 곡에 파란색 표시
+    listItems[index].classList.add('active');
+
+    // 오디오 소스 변경 및 재생
+    bgmAudio.src = trackList[index].url;
+    bgmAudio.play(); // 곡을 선택하면 자동으로 재생 시작
+
+    // 곡을 선택하면 플레이리스트 창을 자동으로 닫음
+    togglePlaylist();
+}
