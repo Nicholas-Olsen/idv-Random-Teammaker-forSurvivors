@@ -107,13 +107,16 @@ function initRoster() {
         chars.forEach(char => {
             const card = document.createElement('div');
             card.className = 'roster-card';
-            // 💡 수정완료: 깨진 백틱과 기호 복구
             card.id = `roster-${char.name}`;
+
+            // 카드에 마우스를 올리면 이름이 말풍선처럼 뜨게 
             card.title = `[그룹 ${listKey.toUpperCase()}] ${char.name}`;
             card.onclick = () => handleRosterClick(char.name);
 
-            // 💡 수정완료: HTML 태그(<, >) 복구
-            card.innerHTML = `<img src="${char.img}" alt="${char.name}" class="char-img"><div class="ban-overlay">X</div>`;
+            card.innerHTML = `
+                <img src="${char.img}" alt="${char.name}" class="char-img">
+                <div class="ban-overlay">X</div>
+            `;
             rosterArea.appendChild(card);
         });
     }
@@ -133,12 +136,11 @@ function onMapDropdownChange() {
     const display = document.getElementById('manualMapDisplay');
 
     if (dropdown.value) {
-        dropdown.style.color = "#333";
-        // 💡 수정완료: 백틱 복구
-        display.innerHTML = `선택 중인 맵:<br>[ ${dropdown.value} ]`;
+        dropdown.style.color = "#333"; 
+        display.innerHTML = `현재 맵: [ ${dropdown.value} ]`;
         confirmArea.classList.remove('hidden');
     } else {
-        dropdown.style.color = "gray";
+        dropdown.style.color = "gray"; 
         confirmArea.classList.add('hidden');
     }
 }
@@ -149,6 +151,7 @@ function confirmManualMap() {
     if (!dropdown.value) return;
 
     const selectedMapObj = mapData.find(m => m.name === dropdown.value);
+    // 수동 선택은 등장 확률 대신 '수동 지정'이라는 텍스트를 부여합니다
     currentMap = { ...selectedMapObj, chance: "수동 지정" };
     goToPhase2();
 }
@@ -165,7 +168,6 @@ function goToPhase2() {
     document.getElementById('mapScreen').classList.add('hidden');
     document.getElementById('comboScreen').classList.remove('hidden');
 
-    // 💡 수정완료: 백틱과 HTML 태그(<, >) 복구
     document.getElementById('currentMapDisplay').innerHTML =
         `선택된 맵: [ ${currentMap.name} ] <span style="font-size: 0.6em; color:#888;">(확률: ${currentMap.chance})</span>`;
 
@@ -230,14 +232,17 @@ function updateRosterVisuals() {
     });
 }
 
-// --- 6. 조합 뽑기 로직 (고급 규칙 및 예외 반영) --- //
+// --- 6. 조합 뽑기 로직 (고급 규칙) --- //
 function generateCombination() {
     const availableData = {};
 
     for (const [listKey, chars] of Object.entries(characterData)) {
-        availableData[listKey] = chars.filter(c => !bannedChars.has(c.name)).map(c => ({ ...c }));
+        availableData[listKey] = chars
+            .filter(c => !bannedChars.has(c.name))
+            .map(c => ({ ...c }));
     }
 
+    // 💡 캐릭터 점수 조절 함수
     function adjustWeight(targetName, amount) {
         for (const g of Object.keys(availableData)) {
             const index = availableData[g].findIndex(c => c.name === targetName);
@@ -247,20 +252,25 @@ function generateCombination() {
         }
     }
 
+    // 💡 맵 시너지 전용 함수
     function applyMapSynergy(targetName, mapNames, amount) {
+        // 현재 선택된 맵이 조건 배열에 포함되어 있다면 점수 가감
         if (mapNames.includes(currentMap.name)) {
             adjustWeight(targetName, amount);
         }
     }
 
-    // [맵 시너지 적용]
+    //⭐ 맵별 시너지 일괄 세팅
     applyMapSynergy('장난감상인', ['호수마을', '레오의기억'], 20);
     applyMapSynergy('장난감상인', ['군수공장', '붉은성당'], -15);
-    applyMapSynergy('환자', ['레오의기억', '달빛강공원'], 20);
-    applyMapSynergy('항공전문가', ['달빛강공원'], 20);
-    applyMapSynergy('곡예사', ['달빛강공원'], 20);
-    applyMapSynergy('기상학자', ['달빛강공원'], 20);
+
+    applyMapSynergy('환자', ['레오의기억', '달빛강공원'], 30);
+    applyMapSynergy('항공전문가', ['달빛강공원'], 30);
+    applyMapSynergy('곡예사', ['달빛강공원'], 25);
+    applyMapSynergy('기상학자', ['달빛강공원'], 30);
+
     applyMapSynergy('행운아', ['성심병원', '돌아올 수 없는 숲', '레오의기억', '차이나타운'], 10);
+
     applyMapSynergy('모험가', ['군수공장', '레오의기억', '돌아올 수 없는 숲'], 25);
     applyMapSynergy('모험가', ['성심병원', '호수마을'], 20);
     applyMapSynergy('모험가', ['에버슬리핑타운', '차이나타운'], 10);
@@ -272,7 +282,7 @@ function generateCombination() {
     applyMapSynergy('납관사', ['차이나타운', '달빛강공원'], 10);
     applyMapSynergy('납관사', ['레오의기억', '호수마을'], 10);
     applyMapSynergy('납관사', ['붉은성당'], -15);
-    applyMapSynergy('납관사', ['성심병원'], -13);
+    applyMapSynergy('납관사', ['성심병원'], -10);
 
     applyMapSynergy('여자아이', ['차이나타운', '달빛강공원'], 10);
     applyMapSynergy('여자아이', ['붉은성당'], -15);
@@ -280,31 +290,34 @@ function generateCombination() {
 
     applyMapSynergy('맹인', ['성심병원'], 5);
     applyMapSynergy('맹인', ['붉은성당', '돌아올 수 없는 숲'], -1);
+
     applyMapSynergy('용병', ['달빛강공원'], 10);
     applyMapSynergy('탈출마스터', ['달빛강공원'], 10);
     applyMapSynergy('야만인', ['달빛강공원'], 10);
     applyMapSynergy('포워드', ['달빛강공원'], 5);
 
-    applyMapSynergy('기계공', ['성심병원'], 25);
-    applyMapSynergy('기계공', ['차이나타운', '호수마을', '에버슬리핑타운', '군수공장'], 20);
-    applyMapSynergy('기계공', ['레오의기억'], 10);
+    applyMapSynergy('기계공', ['성심병원'], 22);
+    applyMapSynergy('기계공', ['차이나타운', '호수마을', '에버슬리핑타운', '군수공장'], 18);
+    applyMapSynergy('기계공', ['레오의기억'], 12);
     applyMapSynergy('기계공', ['붉은성당', '돌아올 수 없는 숲'], -10);
     applyMapSynergy('기계공', ['달빛강공원'], -15);
 
-    applyMapSynergy('작곡가', ['붉은성당', '군수공장', '차이나타운', '레오의기억'], 10);
-
     // ==========================================
 
+    // A그룹 추첨 하기 전 미리 B그룹 상태 확인
     if (availableData.b.length === 0) {
         availableData.a = availableData.a.filter(c => c.name !== '우는광대' && c.name !== '기사');
     }
 
+    // [규칙 1] A그룹에서 무조건 1명 차출
     if (availableData.a.length === 0) {
         alert("구출 그룹에서 뽑을 수 있는 캐릭터가 없습니다.\n(서브구출 그룹 전멸로 인해 우는광대와 기사 출전 불가)");
         return;
     }
 
     const pickedCharA = getWeightedRandomItem(availableData.a);
+
+    // 💡 추첨된 A그룹 캐릭터를 팀 배열 생성 
     const finalTeam = [{ list: 'a', character: pickedCharA }];
 
     const isA7orA8 = (pickedCharA.name === '우는광대' || pickedCharA.name === '기사');
@@ -312,80 +325,53 @@ function generateCombination() {
         availableData.b = availableData.b.filter(c => c.name !== '기자');
     }
 
-    // ⭐ 기본 그룹 셀렉션 가중치 변경
-    const groupWeights = { b: 80, c: 65, d: 70, e: 50, f: 36 };
-
-    // 성심병원 맵에서 F조 그룹 가중치 +20
-    if (currentMap.name === '성심병원') groupWeights.f += 20;
-
-    // --- A그룹 픽에 따른 시너지 발동 ---
+    // 캐릭터 간 시너지 (A그룹 초점)
     if (pickedCharA.name === '항해사') {
-        adjustWeight('마술사', -2); adjustWeight('파로부인', -10); adjustWeight('골동품상인', -40);
-        adjustWeight('교수', -12); adjustWeight('주술사', -25); adjustWeight('심리학자', -5);
-        adjustWeight('탐사원', 10);
+        adjustWeight('마술사', -2);
+        adjustWeight('파로부인', -10);
+        adjustWeight('골동품상인', -40);
+        adjustWeight('교수', -12);
+        adjustWeight('주술사', -25);
+        adjustWeight('심리학자', -5);
     }
-    else if (pickedCharA.name === '탈출마스터') {
-        adjustWeight('궁수', 10); adjustWeight('골동품상인', 20); adjustWeight('마술사', 20);
-        adjustWeight('인형사', 6); adjustWeight('교수', 12);
+    if (pickedCharA.name === '묘지기') {
+        adjustWeight('기계공', -18);
     }
-    else if (pickedCharA.name === '묘지기') {
-        adjustWeight('기계공', -18); adjustWeight('궁수', -10); adjustWeight('골동품상인', 20);
-        adjustWeight('마술사', 15); adjustWeight('인형사', 6); adjustWeight('교수', 18);
-        adjustWeight('화재조사관', 10); adjustWeight('환등사', 12); adjustWeight('기상학자', 10);
-    }
-    else if (pickedCharA.name === '야만인') {
-        adjustWeight('궁수', 10); adjustWeight('화재조사관', 10); adjustWeight('교수', 10);
-    }
-    else if (pickedCharA.name === '포워드') {
+
+    // ⭐ 그룹 셀렉션 가중치 (B~F)
+    const groupWeights = { b: 80, c: 65, d: 70, e: 40, f: 30 };
+
+    // ⭐ [추가 조건] 포워드 선택 시 D그룹 가중치 감소
+    if (pickedCharA.name === '포워드') {
         groupWeights.d = 20;
-        adjustWeight('기계공', 10); adjustWeight('심리학자', 10); adjustWeight('공군', -15);
-        adjustWeight('조향사', -3); adjustWeight('소설가', -8); adjustWeight('환등사', 10);
-        adjustWeight('파로부인', 2); adjustWeight('마술사', 7); adjustWeight('교수', 3);
-    }
-
-    if (['용병', '포워드', '야만인'].includes(pickedCharA.name)) {
-        groupWeights.f += 15;
-        adjustWeight('공군', -15); adjustWeight('치어리더', -7); adjustWeight('샤먼', -15);
-        adjustWeight('환등사', 5); adjustWeight('모험가', 10); adjustWeight('항공전문가', 5);
-        adjustWeight('행운아', 10); adjustWeight('무희', 6); adjustWeight('마술사', 8);
-        adjustWeight('궁수', 6); adjustWeight('골동품상인', 8); adjustWeight('기계공', 3);
-    }
-
-    if (pickedCharA.name === '용병') {
-        adjustWeight('바텐더', 8); adjustWeight('심리학자', 5);
-        adjustWeight('투우사', 5); adjustWeight('항공전문가', 3);
+        adjustWeight('기계공', 10);
+        adjustWeight('심리학자', 10);
+        adjustWeight('공군', -15);
     }
 
     const selectedGroupsCount = { b: 0, c: 0, d: 0, e: 0, f: 0 };
-    let slotsToFill = 3;
+    let slotsToFill = 3; // 앞으로 채워야 할 자리 수
 
     function pickCharacterFromGroup(g) {
-        if (g === 'd') {
-            adjustWeight('환등사', 12);
-        }
-
         const picked = getWeightedRandomItem(availableData[g]);
         finalTeam.push({ list: g, character: picked });
 
-        // 캐릭터 간 연쇄 시너지
+        // 캐릭터 간 시너지 (실시간 증감)
         if (picked.name === '인형사') adjustWeight('의사', -3);
         if (picked.name === '무희') adjustWeight('모험가', -10);
         if (picked.name === '곡예사') adjustWeight('골동품상인', -500);
         if (picked.name === '골동품상인') adjustWeight('곡예사', -500);
 
-        if (picked.name === '납관사') groupWeights.f = 8;
-
-        if (picked.name === '모험가') groupWeights.f -= 40;
-
-        if (picked.name === '장난감상인' && ['달빛강공원', '호수마을'].includes(currentMap.name)) {
-            groupWeights.f -= 80;
+        // 납관사 뽑힐 시 F그룹 확률 대폭 감소
+        if (picked.name === '납관사') {
+            groupWeights.f = 8;
         }
-
         availableData[g] = availableData[g].filter(c => c.name !== picked.name);
         selectedGroupsCount[g]++;
-        slotsToFill--;
+        slotsToFill--; // 남은 자리 1칸 감소
     }
 
+    // 💡 A7(우는광대), A8(기사)가 뽑혔을 경우 B그룹 1자리 강제 할당!
     if (isA7orA8) {
         pickCharacterFromGroup('b');
     }
@@ -395,19 +381,18 @@ function generateCombination() {
         failsafe++;
         const validGroups = [];
 
+        // 현재 추첨 가능한 그룹들만 후보에 올리기
         for (const g of ['b', 'c', 'd', 'e', 'f']) {
-            const currentCount = selectedGroupsCount[g];
+            const currentCount = selectedGroupsCount[g]; // 💡 수정됨
             const maxCap = (g === 'b' || g === 'c') ? 2 : 1;
 
             if (currentCount < maxCap && availableData[g].length > 0) {
-                if (groupWeights[g] > 0) {
-                    validGroups.push({ name: g, weight: groupWeights[g] });
-                }
+                validGroups.push({ name: g, weight: groupWeights[g] });
             }
         }
 
         if (validGroups.length === 0) {
-            alert("밴 된 캐릭터가 너무 많거나, 시너지 제약으로 인해 4인 조합을 구성할 수 없습니다.");
+            alert("밴 된 캐릭터가 너무 많아 4인 조합을 구성할 수 없습니다.");
             return;
         }
 
@@ -419,15 +404,15 @@ function generateCombination() {
     renderResult(finalTeam);
 }
 
-// --- 6. 조합 뽑기 로직 맨 아래쪽 렌더링 함수 --- //
+// 렌더링 함수 //
 function renderResult(team) {
     const resultArea = document.getElementById('resultArea');
     resultArea.innerHTML = '';
 
     const roleNames = {
         a: '구출',
-        b: '서브구출',
-        c: '보조',
+        b: '보조구출',
+        c: '보조구출',
         d: '커버',
         e: '견제',
         f: '해독'
@@ -439,20 +424,15 @@ function renderResult(team) {
 
         const charName = member.character.name;
 
+        // 💡 이름 6글자 이상이면 'long-name' 클래스 추가
         const isLongName = charName.length >= 6;
         const nameClass = isLongName ? "char-name long-name" : "char-name";
 
-        let displayRole = roleNames[member.list];
-        if (charName === '모험가') {
-            displayRole = '특수구출';
-        }
-
-        // 💡 수정완료: 완벽한 백틱 처리 및 태그 열고 닫기 정상화
         card.innerHTML = `
-            <div class="list-name">${displayRole}</div>
+            <div class="list-name">${roleNames[member.list]}</div>
             <img src="${member.character.img}" alt="${charName}" class="result-char-img">
             <div class="${nameClass}">${charName}</div>
-            <div class="weight-info">당첨 확률: ${member.character.chance}%</div>
+            <div class="weight-info">확률: ${member.character.chance}%</div>
         `;
         resultArea.appendChild(card);
     });
@@ -478,6 +458,7 @@ function resetToMapSelection() {
 // 🎵 BGM 플레이리스트 로직
 // =========================================
 
+// 곡 목록 
 const trackList = [
     { title: "Living room", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Living room.mp3" },
     { title: "Alice's Apartment", url: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/music/BGM_Alice's Apartment.mp3" },
@@ -491,16 +472,18 @@ const trackList = [
 
 let currentTrackIndex = 0;
 
+// 페이지 로드 시 플레이리스트를 생성하고 첫 곡을 세팅
 window.addEventListener('DOMContentLoaded', () => {
     const playlistUl = document.getElementById('playlist-ul');
     const bgmAudio = document.getElementById('bgm-audio');
     bgmAudio.loop = true;
 
     bgmAudio.addEventListener('ended', () => {
-        bgmAudio.currentTime = 0; 
+        bgmAudio.currentTime = 0; // 재생 위치를 처음으로
         bgmAudio.play();
     });
 
+    // 1. 플레이리스트에 곡들 추가
     trackList.forEach((track, index) => {
         const li = document.createElement('li');
         li.innerText = track.title;
@@ -522,18 +505,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// 곡 목록(드롭업) 열기/닫기 함수
 function togglePlaylist() {
     document.getElementById('playlist-menu').classList.toggle('hidden');
 }
 
+// 특정 곡을 선택하여 재생하는 함수
 function playTrack(index) {
     const bgmAudio = document.getElementById('bgm-audio');
     const listItems = document.querySelectorAll('#playlist-ul li');
 
+    // 모든 리스트의 파란색(active) 표시 제거
     listItems.forEach(li => li.classList.remove('active'));
+
+    // 선택한 곡에 파란색 표시
     listItems[index].classList.add('active');
 
+    // 오디오 소스 변경 및 재생
     bgmAudio.src = trackList[index].url;
-    bgmAudio.play(); 
+    bgmAudio.play(); // 곡을 선택하면 자동으로 재생 시작
+
+    // 곡을 선택하면 플레이리스트 창을 자동으로 닫음
     togglePlaylist();
 }
