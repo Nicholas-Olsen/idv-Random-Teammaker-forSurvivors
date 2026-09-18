@@ -57,6 +57,7 @@ const characterData = {
     { name: '샤먼', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s9.jpg" },
     { name: '바텐더', weight: 24, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s23.jpg" },
     { name: '여자아이', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s34.jpg" },
+    { name: '무희', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s15.jpg" },
     { name: '소설가', weight: 18, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s33.jpg" },
     { name: '화가', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s28.jpg" }],
 
@@ -65,7 +66,6 @@ const characterData = {
     { name: '기계공', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s10.jpg" },
     { name: '죄수', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s26.jpg" },
     { name: '우배부', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s24.jpg" },
-    { name: '무희', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s15.jpg" },
     { name: '변호사', weight: 20, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s2.jpg" },
     { name: '맹인', weight: 1, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s12.jpg" }]
 };
@@ -278,6 +278,9 @@ function generateCombination() {
     applyMapSynergy('샤먼', ['에버슬리핑타운', '차이나타운', '성심병원'], 30);
     applyMapSynergy('샤먼', ['붉은성당'], 15);
     applyMapSynergy('샤먼', ['군수공장'], -15);
+
+    applyMapSynergy('무희', ['군수공장', '붉은성당'], 16);
+    applyMapSynergy('무희', ['차이나타운', '레오의기억'], 12);
 
     applyMapSynergy('납관사', ['차이나타운', '달빛강공원'], 10);
     applyMapSynergy('납관사', ['레오의기억', '호수마을'], 10);
