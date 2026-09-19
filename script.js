@@ -277,6 +277,7 @@ function generateCombination() {
 
     applyMapSynergy('샤먼', ['에버슬리핑타운', '차이나타운', '성심병원'], 30);
     applyMapSynergy('샤먼', ['붉은성당'], 15);
+    applyMapSynergy('샤먼', ['달빛강공원'], 23);
     applyMapSynergy('샤먼', ['군수공장'], -15);
 
     applyMapSynergy('무희', ['군수공장', '붉은성당'], 16);
