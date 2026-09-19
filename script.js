@@ -295,8 +295,8 @@ function generateCombination() {
     applyMapSynergy('맹인', ['성심병원'], 5);
     applyMapSynergy('맹인', ['붉은성당', '돌아올 수 없는 숲'], -1);
 
-    applyMapSynergy('용병', ['달빛강공원'], 10);
-    applyMapSynergy('탈출마스터', ['달빛강공원'], 10);
+    applyMapSynergy('용병', ['달빛강공원'], 13);
+    applyMapSynergy('탈출마스터', ['달빛강공원'], 16);
     applyMapSynergy('야만인', ['달빛강공원'], 10);
     applyMapSynergy('포워드', ['달빛강공원'], 5);
 
