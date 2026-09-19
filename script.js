@@ -378,13 +378,18 @@ function generateCombination() {
     const selectedGroupsCount = { b: 0, c: 0, d: 0, e: 0, f: 0 };
     let slotsToFill = 3; // 앞으로 채워야 할 자리
 
-    function pickCharacterFromGroup(g) {
-        // 커버캐 고르면 환등사 확률 증가
+    function pickCharacterFromGroup(g, groupProb = 1.0) {
         if (g === 'd') {
             adjustWeight('환등사', 12);
         }
 
         const picked = getWeightedRandomItem(availableData[g]);
+
+        const charProb = parseFloat(picked.chance) / 100;
+
+        const finalChance = (charProb * groupProb * 100).toFixed(2); // 최종 % 변환
+        picked.chance = finalChance;
+
         finalTeam.push({ list: g, character: picked });
 
         // 캐릭터 간 시너지
@@ -402,6 +407,11 @@ function generateCombination() {
             groupWeights.f -= 80;
         }
 
+        if (g === 'b') {
+            groupWeights.b -= 20; // B가 1명 나오면 다음번 B가 나올 확률 감소
+            groupWeights.c -= 10;
+        }
+
         availableData[g] = availableData[g].filter(c => c.name !== picked.name);
         selectedGroupsCount[g]++;
         slotsToFill--;
@@ -409,7 +419,7 @@ function generateCombination() {
 
     // 💡 A7(우는광대), A8(기사)가 뽑혔을 경우 B그룹 1자리 강제 할당!
     if (isA7orA8) {
-        pickCharacterFromGroup('b');
+        pickCharacterFromGroup('b', 1.0);
     }
 
     let failsafe = 0;
@@ -422,7 +432,6 @@ function generateCombination() {
             const maxCap = (g === 'b' || g === 'c') ? 2 : 1;
 
             if (currentCount < maxCap && availableData[g].length > 0) {
-                // 그룹 가중치가 마이너스로 떨어졌을 경우 추첨에서 제외 방어코드 (0 이상일 때만 추첨)
                 if (groupWeights[g] > 0) {
                     validGroups.push({ name: g, weight: groupWeights[g] });
                 }
@@ -433,9 +442,13 @@ function generateCombination() {
             alert("밴 된 캐릭터가 너무 많거나, 시너지 제약으로 인해 4인 조합을 구성할 수 없습니다.");
             return;
         }
+        const totalValidWeight = validGroups.reduce((sum, grp) => sum + grp.weight, 0);
 
         const pickedGroup = getWeightedRandomItem(validGroups);
-        pickCharacterFromGroup(pickedGroup.name);
+        const currentGroupProb = pickedGroup.weight / totalValidWeight;
+
+        // 룰렛 추첨일 경우 실시간 그룹 확률 전달
+        pickCharacterFromGroup(pickedGroup.name, currentGroupProb);
     }
 
     finalTeam.sort((a, b) => a.list.localeCompare(b.list));
