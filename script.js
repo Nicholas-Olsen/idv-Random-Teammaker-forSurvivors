@@ -13,7 +13,7 @@ const mapData = [
 
 // 도둑, 카우보이 제외
 const characterData = {
-    a: [{ name: '묘지기', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s25.jpg" },
+    a: [{ name: '묘지기', weight: 36, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s25.jpg" },
     { name: '항해사', weight: 35, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s22.jpg" },
     { name: '탈출마스터', weight: 30, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s48.jpg" },
     { name: '용병', weight: 25, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s7.jpg" },
