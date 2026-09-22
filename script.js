@@ -337,7 +337,7 @@ function generateCombination() {
     // 캐릭터 간 시너지 (A그룹 초점)
     if (pickedCharA.name === '항해사') {
         adjustWeight('마술사', -2);
-        adjustWeight('파로부인', -10);
+        adjustWeight('파로부인', -5);
         adjustWeight('골동품상인', -40);
         adjustWeight('교수', -12);
         adjustWeight('주술사', -25);
@@ -374,6 +374,7 @@ function generateCombination() {
     if (pickedCharA.name === '용병') {
         adjustWeight('바텐더', 8); adjustWeight('심리학자', 5);
         adjustWeight('투우사', 5); adjustWeight('항공전문가', 3);
+        adjustWeight('주술사', -15); adjustWeight('인형사', -12);
     }
 
     const selectedGroupsCount = { b: 0, c: 0, d: 0, e: 0, f: 0 };
@@ -409,8 +410,8 @@ function generateCombination() {
         }
 
         if (g === 'b') {
-            groupWeights.b -= 20; // B가 1명 나오면 다음번 B가 나올 확률 감소
-            groupWeights.c -= 10;
+            groupWeights.b -= 25; // B가 1명 나오면 다음번 B가 나올 확률 감소
+            groupWeights.c -= 12;
         }
 
         availableData[g] = availableData[g].filter(c => c.name !== picked.name);
