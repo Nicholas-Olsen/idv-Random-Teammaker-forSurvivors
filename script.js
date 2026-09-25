@@ -274,6 +274,7 @@ function generateCombination() {
     applyMapSynergy('모험가', ['군수공장', '레오의기억', '돌아올 수 없는 숲'], 25);
     applyMapSynergy('모험가', ['성심병원', '호수마을'], 20);
     applyMapSynergy('모험가', ['에버슬리핑타운', '차이나타운'], 10);
+    applyMapSynergy('모험가', ['붉은성당', '달빛강공원'], -50);
 
     applyMapSynergy('샤먼', ['에버슬리핑타운', '차이나타운', '성심병원'], 30);
     applyMapSynergy('샤먼', ['붉은성당'], 15);
@@ -295,10 +296,10 @@ function generateCombination() {
     applyMapSynergy('맹인', ['성심병원'], 5);
     applyMapSynergy('맹인', ['붉은성당', '돌아올 수 없는 숲'], -1);
 
-    applyMapSynergy('용병', ['달빛강공원'], 13);
+    applyMapSynergy('용병', ['달빛강공원', '호수마을'], 13);
     applyMapSynergy('탈출마스터', ['달빛강공원'], 16);
     applyMapSynergy('야만인', ['달빛강공원'], 10);
-    applyMapSynergy('포워드', ['달빛강공원'], 5);
+    applyMapSynergy('포워드', ['달빛강공원'], -3);
 
     applyMapSynergy('기계공', ['성심병원'], 22);
     applyMapSynergy('기계공', ['차이나타운', '호수마을', '에버슬리핑타운', '군수공장'], 19);
