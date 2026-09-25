@@ -363,7 +363,7 @@ function generateCombination() {
         adjustWeight('파로부인', 2); adjustWeight('마술사', 7); adjustWeight('교수', 3);
     }
 
-    if (['용병', '포워드', '야만인'].includes(pickedCharA.name)) {
+    if (['포워드', '야만인'].includes(pickedCharA.name)) {
         groupWeights.f += 15;
         adjustWeight('공군', -15); adjustWeight('치어리더', -7); adjustWeight('샤먼', -15);
         adjustWeight('환등사', 5); adjustWeight('모험가', 10); adjustWeight('항공전문가', 5);
@@ -372,9 +372,13 @@ function generateCombination() {
     }
 
     if (pickedCharA.name === '용병') {
-        adjustWeight('바텐더', 8); adjustWeight('심리학자', 5);
-        adjustWeight('투우사', 5); adjustWeight('항공전문가', 3);
-        adjustWeight('주술사', -15); adjustWeight('인형사', -12);
+        groupWeights.f += 15;
+        adjustWeight('공군', -15); adjustWeight('치어리더', -7); adjustWeight('샤먼', -15);
+        adjustWeight('환등사', 5); adjustWeight('모험가', 10); adjustWeight('행운아', 10); 
+        adjustWeight('무희', 6); adjustWeight('마술사', 8); adjustWeight('궁수', 6); 
+        adjustWeight('골동품상인', 8); adjustWeight('기계공', 3); adjustWeight('바텐더', 8); 
+        adjustWeight('심리학자', 5); adjustWeight('투우사', 5); adjustWeight('항공전문가', 7);  
+        adjustWeight('주술사', -15); adjustWeight('인형사', -14);
     }
 
     const selectedGroupsCount = { b: 0, c: 0, d: 0, e: 0, f: 0 };
@@ -395,7 +399,7 @@ function generateCombination() {
         finalTeam.push({ list: g, character: picked });
 
         // 캐릭터 간 시너지
-        if (picked.name === '인형사') adjustWeight('의사', -3);
+        if (picked.name === '인형사') adjustWeight('의사', -3); adjustWeight('주술사', -15);
         if (picked.name === '무희') adjustWeight('모험가', -10);
         if (picked.name === '곡예사') adjustWeight('골동품상인', -500);
         if (picked.name === '골동품상인') adjustWeight('곡예사', -500);
