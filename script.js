@@ -51,7 +51,7 @@ const characterData = {
     { name: '행운아', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s53.jpg" },
     { name: '의사', weight: 50, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s1.jpg" },
     { name: '심리학자', weight: 40, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s32.jpg" },
-    { name: '곤충학자', weight: 15, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s27.jpg" },
+    { name: '곤충학자', weight: 18, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s27.jpg" },
     { name: '선지자', weight: 22, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s16.jpg" },
     { name: '교수', weight: 28, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s36.jpg" },
     { name: '납관사', weight: 18, img: "https://raw.githubusercontent.com/Nicholas-Olsen/idv-Ban-Pick-Simulator/main/images/s17.jpg" },
