@@ -341,8 +341,8 @@ function generateCombination() {
 
     // 캐릭터 간 시너지 (A그룹 초점)
     if (pickedCharA.name === '항해사') {
-        adjustWeight('마술사', -2);
-        adjustWeight('파로부인', -5);
+        adjustWeight('마술사', -10);
+        adjustWeight('파로부인', -8);
         adjustWeight('골동품상인', -40);
         adjustWeight('교수', -12);
         adjustWeight('주술사', -25);
@@ -355,7 +355,7 @@ function generateCombination() {
     }
     else if (pickedCharA.name === '묘지기') {
         adjustWeight('기계공', -18); adjustWeight('궁수', -10); adjustWeight('골동품상인', 20);
-        adjustWeight('마술사', 15); adjustWeight('인형사', 6); adjustWeight('교수', 18);
+        adjustWeight('마술사', 10); adjustWeight('인형사', 6); adjustWeight('교수', 18);
         adjustWeight('화재조사관', 10); adjustWeight('환등사', 12); adjustWeight('기상학자', 10);
     }
     else if (pickedCharA.name === '야만인') {
@@ -365,7 +365,7 @@ function generateCombination() {
         groupWeights.d = 20;
         adjustWeight('기계공', 10); adjustWeight('심리학자', 10); adjustWeight('공군', -15);
         adjustWeight('조향사', -3); adjustWeight('소설가', -8); adjustWeight('환등사', 10);
-        adjustWeight('파로부인', 2); adjustWeight('마술사', 7); adjustWeight('교수', 3);
+        adjustWeight('파로부인', 2); adjustWeight('마술사', 4); adjustWeight('교수', 3);
     }
 
     if (['포워드', '야만인'].includes(pickedCharA.name)) {
